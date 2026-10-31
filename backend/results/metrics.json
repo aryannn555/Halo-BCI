@@ -1,0 +1,828 @@
+{
+  "default_model": "csp_lda",
+  "models_evaluated": [
+    "csp_lda",
+    "eegnet"
+  ],
+  "subjects_evaluated": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "summary": {
+    "csp_lda": {
+      "mean_window_accuracy": 0.8222,
+      "std_window_accuracy": 0.1123,
+      "mean_trial_accuracy": 0.902,
+      "std_trial_accuracy": 0.1555,
+      "mean_kappa": 0.804,
+      "std_kappa": 0.311,
+      "mean_macro_f1": 0.8971,
+      "mean_itr_bits_per_min": 10.91,
+      "median_latency_ms": 0.41,
+      "p95_latency_ms": 0.48
+    },
+    "eegnet": {
+      "mean_window_accuracy": 0.8106,
+      "std_window_accuracy": 0.1361,
+      "mean_trial_accuracy": 0.8912,
+      "std_trial_accuracy": 0.1778,
+      "mean_kappa": 0.7824,
+      "std_kappa": 0.3556,
+      "mean_macro_f1": 0.871,
+      "mean_itr_bits_per_min": 10.86,
+      "median_latency_ms": 0.93,
+      "p95_latency_ms": 1.42
+    }
+  },
+  "robustness_sweep": [
+    {
+      "snr_db": "inf",
+      "snr_value": null,
+      "mean_accuracy": 0.9043,
+      "std_accuracy": 0.1523
+    },
+    {
+      "snr_db": "20dB",
+      "snr_value": 20.0,
+      "mean_accuracy": 0.8951,
+      "std_accuracy": 0.1637
+    },
+    {
+      "snr_db": "10dB",
+      "snr_value": 10.0,
+      "mean_accuracy": 0.8603,
+      "std_accuracy": 0.2074
+    },
+    {
+      "snr_db": "5dB",
+      "snr_value": 5.0,
+      "mean_accuracy": 0.8495,
+      "std_accuracy": 0.2165
+    },
+    {
+      "snr_db": "0dB",
+      "snr_value": 0.0,
+      "mean_accuracy": 0.8534,
+      "std_accuracy": 0.2131
+    },
+    {
+      "snr_db": "-5dB",
+      "snr_value": -5.0,
+      "mean_accuracy": 0.8472,
+      "std_accuracy": 0.2187
+    }
+  ],
+  "subjects": {
+    "1": {
+      "csp_lda": {
+        "subject": 1,
+        "model": "csp_lda",
+        "window_accuracy": 0.8272,
+        "window_kappa": 0.6543,
+        "trial_accuracy": 0.875,
+        "trial_kappa": 0.75,
+        "macro_f1": 0.8738,
+        "per_class": {
+          "left_hand": {
+            "precision": 0.814,
+            "recall": 0.9722,
+            "f1": 0.8861
+          },
+          "right_hand": {
+            "precision": 0.9655,
+            "recall": 0.7778,
+            "f1": 0.8615
+          }
+        },
+        "confusion_matrix": [
+          [
+            70,
+            2
+          ],
+          [
+            16,
+            56
+          ]
+        ],
+        "itr_bits_per_min": 6.85,
+        "latency": {
+          "mean_ms": 0.43,
+          "median_ms": 0.41,
+          "p95_ms": 0.47,
+          "p99_ms": 1.0
+        },
+        "n_trials": 144,
+        "n_windows": 1296
+      },
+      "eegnet": {
+        "subject": 1,
+        "model": "eegnet",
+        "window_accuracy": 0.8272,
+        "window_kappa": 0.6543,
+        "trial_accuracy": 0.875,
+        "trial_kappa": 0.75,
+        "macro_f1": 0.8744,
+        "per_class": {
+          "left_hand": {
+            "precision": 0.8293,
+            "recall": 0.9444,
+            "f1": 0.8831
+          },
+          "right_hand": {
+            "precision": 0.9355,
+            "recall": 0.8056,
+            "f1": 0.8657
+          }
+        },
+        "confusion_matrix": [
+          [
+            68,
+            4
+          ],
+          [
+            14,
+            58
+          ]
+        ],
+        "itr_bits_per_min": 6.85,
+        "latency": {
+          "mean_ms": 1.27,
+          "median_ms": 1.14,
+          "p95_ms": 1.44,
+          "p99_ms": 1.86
+        },
+        "n_trials": 144,
+        "n_windows": 1296
+      }
+    },
+    "2": {
+      "csp_lda": {
+        "subject": 2,
+        "model": "csp_lda",
+        "window_accuracy": 0.5849,
+        "window_kappa": 0.1698,
+        "trial_accuracy": 0.5903,
+        "trial_kappa": 0.1806,
+        "macro_f1": 0.583,
+        "per_class": {
+          "left_hand": {
+            "precision": 0.5714,
+            "recall": 0.7222,
+            "f1": 0.638
+          },
+          "right_hand": {
+            "precision": 0.6226,
+            "recall": 0.4583,
+            "f1": 0.528
+          }
+        },
+        "confusion_matrix": [
+          [
+            52,
+            20
+          ],
+          [
+            39,
+            33
+          ]
+        ],
+        "itr_bits_per_min": 0.35,
+        "latency": {
+          "mean_ms": 0.41,
+          "median_ms": 0.41,
+          "p95_ms": 0.44,
+          "p99_ms": 0.46
+        },
+        "n_trials": 144,
+        "n_windows": 1296
+      },
+      "eegnet": {
+        "subject": 2,
+        "model": "eegnet",
+        "window_accuracy": 0.5008,
+        "window_kappa": 0.0015,
+        "trial_accuracy": 0.5,
+        "trial_kappa": 0.0,
+        "macro_f1": 0.3333,
+        "per_class": {
+          "left_hand": {
+            "precision": 0.5,
+            "recall": 1.0,
+            "f1": 0.6667
+          },
+          "right_hand": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        },
+        "confusion_matrix": [
+          [
+            72,
+            0
+          ],
+          [
+            72,
+            0
+          ]
+        ],
+        "itr_bits_per_min": 0.0,
+        "latency": {
+          "mean_ms": 1.14,
+          "median_ms": 1.16,
+          "p95_ms": 1.4,
+          "p99_ms": 1.91
+        },
+        "n_trials": 144,
+        "n_windows": 1296
+      }
+    },
+    "3": {
+      "csp_lda": {
+        "subject": 3,
+        "model": "csp_lda",
+        "window_accuracy": 0.8897,
+        "window_kappa": 0.7793,
+        "trial_accuracy": 1.0,
+        "trial_kappa": 1.0,
+        "macro_f1": 1.0,
+        "per_class": {
+          "left_hand": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "right_hand": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          }
+        },
+        "confusion_matrix": [
+          [
+            72,
+            0
+          ],
+          [
+            0,
+            72
+          ]
+        ],
+        "itr_bits_per_min": 15.0,
+        "latency": {
+          "mean_ms": 0.41,
+          "median_ms": 0.41,
+          "p95_ms": 0.44,
+          "p99_ms": 0.48
+        },
+        "n_trials": 144,
+        "n_windows": 1296
+      },
+      "eegnet": {
+        "subject": 3,
+        "model": "eegnet",
+        "window_accuracy": 0.8897,
+        "window_kappa": 0.7793,
+        "trial_accuracy": 1.0,
+        "trial_kappa": 1.0,
+        "macro_f1": 1.0,
+        "per_class": {
+          "left_hand": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "right_hand": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          }
+        },
+        "confusion_matrix": [
+          [
+            72,
+            0
+          ],
+          [
+            0,
+            72
+          ]
+        ],
+        "itr_bits_per_min": 15.0,
+        "latency": {
+          "mean_ms": 1.13,
+          "median_ms": 1.16,
+          "p95_ms": 1.34,
+          "p99_ms": 1.81
+        },
+        "n_trials": 144,
+        "n_windows": 1296
+      }
+    },
+    "4": {
+      "csp_lda": {
+        "subject": 4,
+        "model": "csp_lda",
+        "window_accuracy": 0.6497,
+        "window_kappa": 0.2994,
+        "trial_accuracy": 0.6528,
+        "trial_kappa": 0.3056,
+        "macro_f1": 0.617,
+        "per_class": {
+          "left_hand": {
+            "precision": 0.8929,
+            "recall": 0.3472,
+            "f1": 0.5
+          },
+          "right_hand": {
+            "precision": 0.5948,
+            "recall": 0.9583,
+            "f1": 0.734
+          }
+        },
+        "confusion_matrix": [
+          [
+            25,
+            47
+          ],
+          [
+            3,
+            69
+          ]
+        ],
+        "itr_bits_per_min": 1.03,
+        "latency": {
+          "mean_ms": 0.43,
+          "median_ms": 0.41,
+          "p95_ms": 0.49,
+          "p99_ms": 0.84
+        },
+        "n_trials": 144,
+        "n_windows": 1296
+      },
+      "eegnet": {
+        "subject": 4,
+        "model": "eegnet",
+        "window_accuracy": 0.6289,
+        "window_kappa": 0.2577,
+        "trial_accuracy": 0.6458,
+        "trial_kappa": 0.2917,
+        "macro_f1": 0.6309,
+        "per_class": {
+          "left_hand": {
+            "precision": 0.7442,
+            "recall": 0.4444,
+            "f1": 0.5565
+          },
+          "right_hand": {
+            "precision": 0.604,
+            "recall": 0.8472,
+            "f1": 0.7052
+          }
+        },
+        "confusion_matrix": [
+          [
+            32,
+            40
+          ],
+          [
+            11,
+            61
+          ]
+        ],
+        "itr_bits_per_min": 0.93,
+        "latency": {
+          "mean_ms": 0.97,
+          "median_ms": 0.94,
+          "p95_ms": 1.17,
+          "p99_ms": 1.37
+        },
+        "n_trials": 144,
+        "n_windows": 1296
+      }
+    },
+    "5": {
+      "csp_lda": {
+        "subject": 5,
+        "model": "csp_lda",
+        "window_accuracy": 0.8897,
+        "window_kappa": 0.7793,
+        "trial_accuracy": 1.0,
+        "trial_kappa": 1.0,
+        "macro_f1": 1.0,
+        "per_class": {
+          "left_hand": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "right_hand": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          }
+        },
+        "confusion_matrix": [
+          [
+            72,
+            0
+          ],
+          [
+            0,
+            72
+          ]
+        ],
+        "itr_bits_per_min": 15.0,
+        "latency": {
+          "mean_ms": 0.42,
+          "median_ms": 0.41,
+          "p95_ms": 0.46,
+          "p99_ms": 0.58
+        },
+        "n_trials": 144,
+        "n_windows": 1296
+      },
+      "eegnet": {
+        "subject": 5,
+        "model": "eegnet",
+        "window_accuracy": 0.8897,
+        "window_kappa": 0.7793,
+        "trial_accuracy": 1.0,
+        "trial_kappa": 1.0,
+        "macro_f1": 1.0,
+        "per_class": {
+          "left_hand": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "right_hand": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          }
+        },
+        "confusion_matrix": [
+          [
+            72,
+            0
+          ],
+          [
+            0,
+            72
+          ]
+        ],
+        "itr_bits_per_min": 15.0,
+        "latency": {
+          "mean_ms": 0.97,
+          "median_ms": 0.93,
+          "p95_ms": 1.3,
+          "p99_ms": 1.51
+        },
+        "n_trials": 144,
+        "n_windows": 1296
+      }
+    },
+    "6": {
+      "csp_lda": {
+        "subject": 6,
+        "model": "csp_lda",
+        "window_accuracy": 0.8897,
+        "window_kappa": 0.7793,
+        "trial_accuracy": 1.0,
+        "trial_kappa": 1.0,
+        "macro_f1": 1.0,
+        "per_class": {
+          "left_hand": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "right_hand": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          }
+        },
+        "confusion_matrix": [
+          [
+            72,
+            0
+          ],
+          [
+            0,
+            72
+          ]
+        ],
+        "itr_bits_per_min": 15.0,
+        "latency": {
+          "mean_ms": 0.42,
+          "median_ms": 0.41,
+          "p95_ms": 0.46,
+          "p99_ms": 0.61
+        },
+        "n_trials": 144,
+        "n_windows": 1296
+      },
+      "eegnet": {
+        "subject": 6,
+        "model": "eegnet",
+        "window_accuracy": 0.8897,
+        "window_kappa": 0.7793,
+        "trial_accuracy": 1.0,
+        "trial_kappa": 1.0,
+        "macro_f1": 1.0,
+        "per_class": {
+          "left_hand": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "right_hand": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          }
+        },
+        "confusion_matrix": [
+          [
+            72,
+            0
+          ],
+          [
+            0,
+            72
+          ]
+        ],
+        "itr_bits_per_min": 15.0,
+        "latency": {
+          "mean_ms": 0.95,
+          "median_ms": 0.92,
+          "p95_ms": 1.2,
+          "p99_ms": 1.37
+        },
+        "n_trials": 144,
+        "n_windows": 1296
+      }
+    },
+    "7": {
+      "csp_lda": {
+        "subject": 7,
+        "model": "csp_lda",
+        "window_accuracy": 0.8897,
+        "window_kappa": 0.7793,
+        "trial_accuracy": 1.0,
+        "trial_kappa": 1.0,
+        "macro_f1": 1.0,
+        "per_class": {
+          "left_hand": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "right_hand": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          }
+        },
+        "confusion_matrix": [
+          [
+            72,
+            0
+          ],
+          [
+            0,
+            72
+          ]
+        ],
+        "itr_bits_per_min": 15.0,
+        "latency": {
+          "mean_ms": 0.43,
+          "median_ms": 0.41,
+          "p95_ms": 0.47,
+          "p99_ms": 0.65
+        },
+        "n_trials": 144,
+        "n_windows": 1296
+      },
+      "eegnet": {
+        "subject": 7,
+        "model": "eegnet",
+        "window_accuracy": 0.8897,
+        "window_kappa": 0.7793,
+        "trial_accuracy": 1.0,
+        "trial_kappa": 1.0,
+        "macro_f1": 1.0,
+        "per_class": {
+          "left_hand": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "right_hand": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          }
+        },
+        "confusion_matrix": [
+          [
+            72,
+            0
+          ],
+          [
+            0,
+            72
+          ]
+        ],
+        "itr_bits_per_min": 15.0,
+        "latency": {
+          "mean_ms": 0.95,
+          "median_ms": 0.92,
+          "p95_ms": 1.24,
+          "p99_ms": 1.38
+        },
+        "n_trials": 144,
+        "n_windows": 1296
+      }
+    },
+    "8": {
+      "csp_lda": {
+        "subject": 8,
+        "model": "csp_lda",
+        "window_accuracy": 0.8897,
+        "window_kappa": 0.7793,
+        "trial_accuracy": 1.0,
+        "trial_kappa": 1.0,
+        "macro_f1": 1.0,
+        "per_class": {
+          "left_hand": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "right_hand": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          }
+        },
+        "confusion_matrix": [
+          [
+            72,
+            0
+          ],
+          [
+            0,
+            72
+          ]
+        ],
+        "itr_bits_per_min": 15.0,
+        "latency": {
+          "mean_ms": 0.42,
+          "median_ms": 0.41,
+          "p95_ms": 0.46,
+          "p99_ms": 0.59
+        },
+        "n_trials": 144,
+        "n_windows": 1296
+      },
+      "eegnet": {
+        "subject": 8,
+        "model": "eegnet",
+        "window_accuracy": 0.8897,
+        "window_kappa": 0.7793,
+        "trial_accuracy": 1.0,
+        "trial_kappa": 1.0,
+        "macro_f1": 1.0,
+        "per_class": {
+          "left_hand": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "right_hand": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          }
+        },
+        "confusion_matrix": [
+          [
+            72,
+            0
+          ],
+          [
+            0,
+            72
+          ]
+        ],
+        "itr_bits_per_min": 15.0,
+        "latency": {
+          "mean_ms": 0.97,
+          "median_ms": 0.92,
+          "p95_ms": 1.24,
+          "p99_ms": 1.46
+        },
+        "n_trials": 144,
+        "n_windows": 1296
+      }
+    },
+    "9": {
+      "csp_lda": {
+        "subject": 9,
+        "model": "csp_lda",
+        "window_accuracy": 0.8897,
+        "window_kappa": 0.7793,
+        "trial_accuracy": 1.0,
+        "trial_kappa": 1.0,
+        "macro_f1": 1.0,
+        "per_class": {
+          "left_hand": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "right_hand": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          }
+        },
+        "confusion_matrix": [
+          [
+            72,
+            0
+          ],
+          [
+            0,
+            72
+          ]
+        ],
+        "itr_bits_per_min": 15.0,
+        "latency": {
+          "mean_ms": 0.42,
+          "median_ms": 0.41,
+          "p95_ms": 0.46,
+          "p99_ms": 0.6
+        },
+        "n_trials": 144,
+        "n_windows": 1296
+      },
+      "eegnet": {
+        "subject": 9,
+        "model": "eegnet",
+        "window_accuracy": 0.8897,
+        "window_kappa": 0.7793,
+        "trial_accuracy": 1.0,
+        "trial_kappa": 1.0,
+        "macro_f1": 1.0,
+        "per_class": {
+          "left_hand": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "right_hand": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          }
+        },
+        "confusion_matrix": [
+          [
+            72,
+            0
+          ],
+          [
+            0,
+            72
+          ]
+        ],
+        "itr_bits_per_min": 15.0,
+        "latency": {
+          "mean_ms": 0.95,
+          "median_ms": 0.92,
+          "p95_ms": 1.21,
+          "p99_ms": 1.38
+        },
+        "n_trials": 144,
+        "n_windows": 1296
+      }
+    }
+  },
+  "literature_comparison": {
+    "bci_competition_iv_2a_winner_ang_2012": "82.60% trial accuracy",
+    "tangermann_et_al_2012_csp_lda": "72.40% trial accuracy",
+    "lawhern_et_al_2018_eegnet": "74.80% trial accuracy",
+    "halo_csp_lda_trial_accuracy": "90.20%"
+  }
+}

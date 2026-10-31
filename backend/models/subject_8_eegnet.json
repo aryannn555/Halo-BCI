@@ -1,0 +1,13 @@
+{
+  "subject": 8,
+  "model": "eegnet",
+  "window_acc": 1.0,
+  "trial_acc": 1.0,
+  "stopped_epoch": 50,
+  "best_val_loss": 0.0,
+  "device": "mps",
+  "n_train_windows": 1296,
+  "n_test_windows": 1296,
+  "sfreq": 250,
+  "window_s": 2.0
+}

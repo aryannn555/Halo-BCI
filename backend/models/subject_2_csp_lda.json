@@ -1,0 +1,11 @@
+{
+  "subject": 2,
+  "model": "csp_lda",
+  "window_acc": 0.5849,
+  "trial_acc": 0.5972,
+  "shuffled_sanity_acc": 0.5031,
+  "n_train_windows": 1296,
+  "n_test_windows": 1296,
+  "sfreq": 250,
+  "window_s": 2.0
+}
