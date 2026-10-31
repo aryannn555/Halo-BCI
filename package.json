@@ -1,0 +1,11 @@
+{
+  "name": "halo-bci-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Halo — Assistive EEG Brain-Computer Interface Monorepo",
+  "scripts": {
+    "dev": "make dev",
+    "dev:backend": "cd backend && .venv/bin/uvicorn app.main:app --reload --port 8000",
+    "dev:frontend": "cd frontend && npm run dev"
+  }
+}

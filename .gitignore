@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+backend/.venv/
+.venv/
+
+# Next.js build
+.next/
+frontend/.next/
+out/
+build/
+*.tsbuildinfo
+next-env.d.ts
+
+# Python / Cache
+__pycache__/
+*/__pycache__/
+*/**/__pycache__/
+*.py[cod]
+*$py.class
+backend/cache/
+*.npz
+
+# Testing / Scratch
+.pytest_cache/
+scratch/
+test_*.png
+*.log
+
+# Misc / OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Environment
+.env
+.env.local
+.env*.local
