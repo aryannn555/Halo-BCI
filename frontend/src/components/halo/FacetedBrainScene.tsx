@@ -83,11 +83,11 @@ export function FacetedBrainScene({
     const shardsGroup = new THREE.Group();
     brainGroup.add(shardsGroup);
 
-    // Initial Sagittal lateral orientation:
-    // Left hemisphere facing camera, Frontal pole on Left, Occipital on Right
-    const BASE_ROT_X = 0.08;
-    const BASE_ROT_Y = -Math.PI / 2 + 0.12; // ~ -1.45 rad
-    const BASE_ROT_Z = -0.04;
+    // Initial Three-Quarter Bilateral 3D Orientation (Pinterest Reference Frame 01):
+    // Both Left & Right hemispheres clearly visible, rounded volumetric depth, frontal pole on Left
+    const BASE_ROT_X = 0.12;
+    const BASE_ROT_Y = -0.58; // Three-quarter perspective showing both hemispheres in full 3D volume
+    const BASE_ROT_Z = -0.02;
     brainGroup.rotation.set(BASE_ROT_X, BASE_ROT_Y, BASE_ROT_Z);
 
     // Mouse parallax tracking
@@ -252,13 +252,13 @@ export function FacetedBrainScene({
             const i1 = faces[f * 3 + 1];
             const i2 = faces[f * 3 + 2];
 
-            // FreeSurfer RAS to Three.js mapping matching the working hero orientation:
-            // Three X = FS Axis 0 (lateral Left - to Right +)
-            // Three Y = FS Axis 2 (inferior/posterior - to superior/anterior +)
-            // Three Z = FS Axis 1 (inferior - to superior +)
-            const p0: [number, number, number] = [v[i0 * 3], v[i0 * 3 + 2], v[i0 * 3 + 1]];
-            const p1: [number, number, number] = [v[i1 * 3], v[i1 * 3 + 2], v[i1 * 3 + 1]];
-            const p2: [number, number, number] = [v[i2 * 3], v[i2 * 3 + 2], v[i2 * 3 + 1]];
+            // Three.js Anatomical Coordinates from fsaverage_brain.json:
+            // Three X = v[0] (lateral Left - to Right +)
+            // Three Y = v[1] (inferior - to superior +)
+            // Three Z = v[2] (posterior - to anterior +)
+            const p0: [number, number, number] = [v[i0 * 3], v[i0 * 3 + 1], v[i0 * 3 + 2]];
+            const p1: [number, number, number] = [v[i1 * 3], v[i1 * 3 + 1], v[i1 * 3 + 2]];
+            const p2: [number, number, number] = [v[i2 * 3], v[i2 * 3 + 1], v[i2 * 3 + 2]];
 
             rawFaces.push({ p0, p1, p2, hemi });
           }
@@ -267,18 +267,18 @@ export function FacetedBrainScene({
         extractFaces(lh, "lh");
         extractFaces(rh, "rh");
 
-        // Brainstem stalk descending vertically
+        // Brainstem stalk descending vertically from inferior posterior base
         const stemTiers = 14;
         for (let t = 0; t < stemTiers; t++) {
           const progress = t / (stemTiers - 1);
-          const y = -0.7 - progress * 1.05;
-          const radius = 0.22 * (1.0 - progress * 0.55);
+          const y = -0.7 - progress * 0.95;
+          const radius = 0.20 * (1.0 - progress * 0.55);
           const segments = 12;
 
           for (let s = 0; s < segments; s++) {
             const a0 = (s / segments) * Math.PI * 2;
             const a1 = ((s + 1) / segments) * Math.PI * 2;
-            const zCenter = -0.2;
+            const zCenter = -0.22;
 
             const p0: [number, number, number] = [
               Math.cos(a0) * radius,
@@ -300,22 +300,22 @@ export function FacetedBrainScene({
           }
         }
 
-        // Cerebellum cluster under occipital lobe
-        const cbTiers = 8;
+        // Cerebellum cluster under occipital lobe - creates seamless anatomical fill
+        const cbTiers = 10;
         for (let c = 0; c < cbTiers; c++) {
-          const cy = -0.65 - c * 0.05;
-          const count = 18;
+          const cy = -0.54 - c * 0.045;
+          const count = 22;
           for (let k = 0; k < count; k++) {
             const angle = (k / count) * Math.PI * 2;
-            const rx = 0.45 * (1 - c * 0.08);
-            const rz = 0.3 * (1 - c * 0.08);
+            const rx = 0.52 * (1 - c * 0.07);
+            const rz = 0.38 * (1 - c * 0.07);
             const cx = Math.cos(angle) * rx;
-            const cz = -0.6 + Math.sin(angle) * rz;
+            const cz = -0.50 + Math.sin(angle) * rz;
 
-            const d = 0.06;
-            const p0: [number, number, number] = [cx - d, cy, cz - d];
-            const p1: [number, number, number] = [cx + d, cy, cz - d];
-            const p2: [number, number, number] = [cx, cy - d * 0.8, cz + d];
+            const d = 0.10 * (1 - c * 0.05);
+            const p0: [number, number, number] = [cx - d, cy, cz - d * 0.6];
+            const p1: [number, number, number] = [cx + d, cy, cz - d * 0.6];
+            const p2: [number, number, number] = [cx, cy - d * 0.8, cz + d * 0.8];
 
             rawFaces.push({ p0, p1, p2, hemi: cx < 0 ? "lh" : "rh" });
           }
@@ -905,8 +905,8 @@ export function FacetedBrainScene({
           }
 
           // Three.js coordinates for C3 (left motor) and C4 (right motor)
-          const distC3 = Math.hypot(cx - -0.45, cy - 0.0, cz - 0.55);
-          const distC4 = Math.hypot(cx - 0.45, cy - 0.0, cz - 0.55);
+          const distC3 = Math.hypot(cx - -0.45, cy - 0.45, cz - 0.0);
+          const distC4 = Math.hypot(cx - 0.45, cy - 0.45, cz - 0.0);
 
           let boostR = 0;
           let boostG = 0;
