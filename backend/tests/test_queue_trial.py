@@ -1,7 +1,10 @@
 import asyncio
 import json
+import pytest
 import websockets
 
+
+@pytest.mark.asyncio
 async def test_queue_trial():
     uri = "ws://localhost:8000/ws"
     print(f"Connecting to {uri} for queue_trial smoke test...")

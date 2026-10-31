@@ -272,7 +272,7 @@ export function NoiseRobustnessLab({ metrics }: NoiseRobustnessLabProps) {
               </span>
             </div>
 
-            <div className="grid grid-cols-6 gap-1.5">
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
               {SNR_STOPS.map((stop) => {
                 const isSelected = activeSnr === stop.snr;
                 return (
@@ -280,7 +280,8 @@ export function NoiseRobustnessLab({ metrics }: NoiseRobustnessLabProps) {
                     key={stop.label}
                     type="button"
                     onClick={() => handleSelectSnr(stop.snr)}
-                    className={`py-2 px-1 rounded-xl text-xs font-mono transition-all duration-200 border text-center flex flex-col items-center justify-center ${
+                    aria-label={`Set noise SNR to ${stop.label} (${stop.sub})`}
+                    className={`min-h-[44px] min-w-[40px] py-2 px-1.5 rounded-xl text-xs font-mono transition-all duration-200 border text-center flex flex-col items-center justify-center ${
                       isSelected
                         ? "bg-white text-[#07080A] font-bold border-white shadow-[0_0_12px_rgba(255,255,255,0.4)] scale-105 z-10"
                         : "bg-white/[0.03] hover:bg-white/[0.08] text-muted hover:text-text border-white/5"

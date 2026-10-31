@@ -138,7 +138,8 @@ export function CommandBoardInterface({
               setTargetCommand(e.target.value);
               setNavPath([]);
             }}
-            className="bg-white/[0.04] border border-white/10 rounded-lg px-2.5 py-1 text-xs text-text focus:outline-none focus:ring-1 focus:ring-[#4CC9F0]"
+            aria-label="Select Simulated Target Command"
+            className="bg-white/[0.04] border border-white/10 rounded-lg px-3 min-h-[40px] text-xs text-text focus:outline-none focus:ring-1 focus:ring-[#4CC9F0]"
           >
             {COMMANDS.map((c) => (
               <option key={c.id} value={c.id} className="bg-[#0D0F12]">
@@ -149,10 +150,11 @@ export function CommandBoardInterface({
 
           <button
             onClick={() => setNavPath([])}
-            className="p-1 rounded-md text-muted/60 hover:text-text hover:bg-white/5 transition-colors"
+            aria-label="Reset binary navigation tree"
+            className="min-w-[40px] min-h-[40px] flex items-center justify-center rounded-lg text-muted/60 hover:text-text hover:bg-white/5 transition-colors border border-white/5"
             title="Reset binary navigation tree"
           >
-            <RotateCcw className="w-3 h-3" />
+            <RotateCcw className="w-4 h-4" />
           </button>
         </div>
       </div>

@@ -11,7 +11,7 @@ import json
 import logging
 import sys
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 # Ensure backend root is on sys.path
 backend_dir = Path(__file__).resolve().parent.parent
@@ -26,10 +26,10 @@ logger = logging.getLogger("export_session")
 
 
 async def main():
-    collected_frames: List[Dict[str, Any]] = []
+    collected_frames: list[dict[str, Any]] = []
     target_frames = 1200  # 120 seconds at 100 ms hops (10 fps)
 
-    async def broadcast(frame: Dict[str, Any]):
+    async def broadcast(frame: dict[str, Any]):
         nonlocal collected_frames
         if len(collected_frames) < target_frames:
             # Deep clone / sanitize frame

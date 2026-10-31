@@ -133,9 +133,10 @@ export function ArenaInterface({
 
           <button
             onClick={handleResetArena}
-            className="flex items-center gap-1 px-3 py-1 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-muted hover:text-text border border-white/10 transition-colors shadow-sm"
+            aria-label="Reset Arena Simulation"
+            className="flex items-center gap-1.5 px-3.5 min-h-[40px] rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-muted hover:text-text border border-white/10 transition-colors shadow-sm"
           >
-            <RotateCcw className="w-3 h-3" />
+            <RotateCcw className="w-3.5 h-3.5" />
             <span>Reset</span>
           </button>
         </div>

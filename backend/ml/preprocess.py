@@ -1,4 +1,3 @@
-from typing import Dict, List, Optional
 import numpy as np
 from scipy import signal
 
@@ -94,7 +93,7 @@ preprocess_batch = prepare_batch
 def compute_bandpower(
     eeg_window: np.ndarray,
     sfreq: float = DEFAULT_SFREQ,
-) -> Dict[str, List[float]]:
+) -> dict[str, list[float]]:
     """Calculates Mu (8-12 Hz) and Beta (16-24 Hz) power per channel for the HUD visualizer.
 
     Parameters

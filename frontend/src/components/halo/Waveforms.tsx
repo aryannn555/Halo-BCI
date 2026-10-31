@@ -396,26 +396,28 @@ export function Waveforms({ className }: { className?: string }) {
           </div>
 
           {/* Mode Switch: Motor vs All */}
-          <div className="flex items-center gap-1 bg-white/[0.03] p-0.5 rounded-full border border-white/10">
+          <div className="flex items-center gap-1 bg-white/[0.03] p-1 rounded-full border border-white/10">
             <button
               onClick={() => setChannelMode("motor")}
               className={cn(
-                "px-3 py-0.5 rounded-full text-xs font-mono font-medium transition-colors",
+                "px-3.5 py-2 min-h-[40px] inline-flex items-center rounded-full text-xs font-mono font-medium transition-colors",
                 channelMode === "motor"
                   ? "bg-white/15 text-white shadow-sm"
                   : "text-muted hover:text-text"
               )}
+              aria-label="Filter to 7 Motor channels"
             >
               Motor (7)
             </button>
             <button
               onClick={() => setChannelMode("all")}
               className={cn(
-                "px-3 py-0.5 rounded-full text-xs font-mono font-medium transition-colors",
+                "px-3.5 py-2 min-h-[40px] inline-flex items-center rounded-full text-xs font-mono font-medium transition-colors",
                 channelMode === "all"
                   ? "bg-white/15 text-white shadow-sm"
                   : "text-muted hover:text-text"
               )}
+              aria-label="View all 22 EEG channels"
             >
               All 22
             </button>
@@ -438,22 +440,24 @@ export function Waveforms({ className }: { className?: string }) {
                 max={300}
                 step={25}
                 onValueChange={(val) => setScaleUv(val[0])}
+                aria-label="Waveform amplitude scale in microvolts"
               />
             </div>
           </div>
 
           {/* Time window segmented pills */}
-          <div className="flex items-center gap-1 bg-white/[0.03] p-0.5 rounded-full border border-white/10">
+          <div className="flex items-center gap-1 bg-white/[0.03] p-1 rounded-full border border-white/10">
             {[4, 8, 16].map((sec) => (
               <button
                 key={sec}
                 onClick={() => setTimeWindow(sec)}
                 className={cn(
-                  "px-2.5 py-0.5 rounded-full text-xs font-mono transition-colors",
+                  "px-3 py-2 min-h-[40px] inline-flex items-center rounded-full text-xs font-mono transition-colors",
                   timeWindow === sec
                     ? "bg-white/15 text-white font-medium"
                     : "text-muted hover:text-text"
                 )}
+                aria-label={`Time window: ${sec} seconds`}
               >
                 {sec}s
               </button>
@@ -464,14 +468,15 @@ export function Waveforms({ className }: { className?: string }) {
           <button
             onClick={() => setIsPaused((p) => !p)}
             className={cn(
-              "p-1.5 rounded-full border transition-colors",
+              "w-10 h-10 min-w-[40px] min-h-[40px] inline-flex items-center justify-center rounded-full border transition-colors",
               isPaused
                 ? "bg-amber-500/15 border-amber-500/30 text-amber-300"
                 : "halo-glass hover:bg-white/10 text-muted hover:text-text"
             )}
             title={isPaused ? "Resume visual trace" : "Pause visual trace"}
+            aria-label={isPaused ? "Resume visual trace" : "Pause visual trace"}
           >
-            {isPaused ? <Play className="w-3.5 h-3.5" /> : <Pause className="w-3.5 h-3.5" />}
+            {isPaused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
           </button>
         </div>
       </div>

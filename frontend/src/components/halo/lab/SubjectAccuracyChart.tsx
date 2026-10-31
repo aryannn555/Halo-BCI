@@ -109,10 +109,11 @@ export function SubjectAccuracyChart({
                 <button
                   type="button"
                   onClick={() => onSelectSubject(null)}
-                  className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-mono bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-500/30 transition-all shadow-sm"
+                  aria-label="Clear Subject Filter"
+                  className="inline-flex items-center gap-1.5 px-3 min-h-[40px] rounded-full text-xs font-mono bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-500/30 transition-all shadow-sm"
                 >
                   <span>Filtered: Subject {selectedSubject}</span>
-                  <X className="w-3 h-3" />
+                  <X className="w-3.5 h-3.5" />
                 </button>
               ) : (
                 <Pill variant="muted" size="sm" className="font-mono text-[10px]">
@@ -149,7 +150,8 @@ export function SubjectAccuracyChart({
           <button
             type="button"
             onClick={() => onSelectSubject(null)}
-            className={`px-2 py-0.5 rounded-full text-xs font-mono transition-all ${
+            aria-label="View all subjects"
+            className={`min-h-[40px] px-3.5 rounded-full text-xs font-mono transition-all flex items-center justify-center ${
               selectedSubject === null
                 ? "bg-white/20 text-white font-bold shadow-sm"
                 : "text-muted hover:text-text hover:bg-white/5"
@@ -164,7 +166,8 @@ export function SubjectAccuracyChart({
                 key={sub}
                 type="button"
                 onClick={() => onSelectSubject(isSelected ? null : sub)}
-                className={`w-6 h-6 rounded-full text-xs font-mono transition-all flex items-center justify-center ${
+                aria-label={`Filter by Subject ${sub}`}
+                className={`min-w-[40px] min-h-[40px] rounded-full text-xs font-mono transition-all flex items-center justify-center ${
                   isSelected
                     ? "bg-[#4CC9F0] text-[#07080A] font-bold shadow-[0_0_8px_rgba(76,201,240,0.6)]"
                     : "text-muted hover:text-text hover:bg-white/10"

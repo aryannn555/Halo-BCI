@@ -11,3 +11,7 @@ braindecode
 torch
 joblib
 pandas
+pytest
+pytest-asyncio
+httpx
+ruff

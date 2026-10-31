@@ -133,16 +133,18 @@ export default function LabPage() {
           <Button
             onClick={loadMetricsData}
             variant="outline"
-            className="rounded-full h-8 px-3 bg-white/[0.04] hover:bg-white/[0.08] border-white/10 text-xs text-text flex items-center gap-1.5 font-mono shadow-sm"
+            aria-label="Refresh Metrics Data"
+            className="rounded-full min-h-[40px] px-3.5 bg-white/[0.04] hover:bg-white/[0.08] border-white/10 text-xs text-text flex items-center gap-1.5 font-mono shadow-sm"
           >
-            <RefreshCw className="w-3 h-3 text-muted" />
+            <RefreshCw className="w-3.5 h-3.5 text-muted" />
             <span>Refresh</span>
           </Button>
 
           <Button
             onClick={handleDownloadReport}
             variant="outline"
-            className="rounded-full h-8 px-3.5 bg-white/[0.04] hover:bg-white/[0.08] border-white/10 text-xs text-text flex items-center gap-1.5 font-mono shadow-sm"
+            aria-label="Download Full Benchmark PDF Report"
+            className="rounded-full min-h-[40px] px-4 bg-white/[0.04] hover:bg-white/[0.08] border-white/10 text-xs text-text flex items-center gap-1.5 font-mono shadow-sm"
           >
             <Download className="w-3.5 h-3.5 text-emerald-400" />
             <span>PDF Report</span>

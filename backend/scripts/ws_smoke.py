@@ -1,7 +1,7 @@
 import asyncio
 import json
 import time
-from typing import List
+
 import numpy as np
 import websockets
 
@@ -10,7 +10,7 @@ WS_URI = "ws://localhost:8000/ws"
 
 async def run_smoke_test(target_frames: int = 20, subject: int = 3) -> None:
     print("\n" + "=" * 78)
-    print(f"🚀 HALO BCI — WEBSOCKET REPLAY SMOKE TEST")
+    print("🚀 HALO BCI — WEBSOCKET REPLAY SMOKE TEST")
     print(f"   Connecting to: {WS_URI}")
     print(f"   Target: Subject {subject} | Target frames: {target_frames} | Speed: 1.0x")
     print("=" * 78 + "\n")
@@ -43,9 +43,9 @@ async def run_smoke_test(target_frames: int = 20, subject: int = 3) -> None:
         print("-" * 78)
 
         frames_received = 0
-        timestamps: List[float] = []
-        latencies: List[float] = []
-        matches: List[bool] = []
+        timestamps: list[float] = []
+        latencies: list[float] = []
+        matches: list[bool] = []
 
         t_start = time.perf_counter()
 
@@ -111,7 +111,7 @@ async def run_smoke_test(target_frames: int = 20, subject: int = 3) -> None:
         lat_ok = p95 < 50.0
 
         print("\n" + "=" * 78)
-        print(f"🏁 ACCEPTANCE CRITERIA STATUS:")
+        print("🏁 ACCEPTANCE CRITERIA STATUS:")
         print(f"   [1] Frame rate ~ 10 fps (8.5 - 11.5): {'✅ PASSED' if fps_ok else '❌ FAILED'} ({actual_fps:.2f} fps)")
         print(f"   [2] p95 Latency < 50 ms:              {'✅ PASSED' if lat_ok else '❌ FAILED'} ({p95:.2f} ms)")
         print("=" * 78 + "\n")

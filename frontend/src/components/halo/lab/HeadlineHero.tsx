@@ -64,25 +64,27 @@ export function HeadlineHero({
               <button
                 type="button"
                 onClick={() => onSelectModel("csp_lda")}
-                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono transition-all duration-200 ${
+                aria-label="Select CSP + LDA Architecture"
+                className={`flex items-center gap-1.5 px-4 min-h-[40px] rounded-full text-xs font-mono transition-all duration-200 ${
                   isCsp
                     ? "bg-[#4CC9F0] text-[#07080A] font-bold shadow-[0_0_12px_rgba(76,201,240,0.5)]"
                     : "text-muted hover:text-text hover:bg-white/5"
                 }`}
               >
-                <Zap className="w-3 h-3" />
+                <Zap className="w-3.5 h-3.5" />
                 <span>CSP + LDA</span>
               </button>
               <button
                 type="button"
                 onClick={() => onSelectModel("eegnet")}
-                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono transition-all duration-200 ${
+                aria-label="Select EEGNet CNN Architecture"
+                className={`flex items-center gap-1.5 px-4 min-h-[40px] rounded-full text-xs font-mono transition-all duration-200 ${
                   !isCsp
                     ? "bg-[#FFB547] text-[#07080A] font-bold shadow-[0_0_12px_rgba(255,181,71,0.5)]"
                     : "text-muted hover:text-text hover:bg-white/5"
                 }`}
               >
-                <Cpu className="w-3 h-3" />
+                <Cpu className="w-3.5 h-3.5" />
                 <span>EEGNet (CNN)</span>
               </button>
             </div>

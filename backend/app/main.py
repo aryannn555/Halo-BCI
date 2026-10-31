@@ -1,24 +1,21 @@
 import json
 import logging
-from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
+
+import torch
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
-import torch
 
 from app.config import (
     BASE_DIR,
     CACHE_DIR,
     CHANNELS,
-    CLASSES,
-    HOP_MS,
-    MODELS,
     SFREQ,
     SUBJECTS,
-    WINDOW_S,
 )
-from app.ws import get_available_models, router as ws_router
+from app.ws import get_available_models
+from app.ws import router as ws_router
 
 logger = logging.getLogger("halo.main")
 
@@ -38,14 +35,14 @@ app.include_router(ws_router)
 
 
 @app.get("/health")
-def health() -> Dict[str, Any]:
+def health() -> dict[str, Any]:
     """Health check returning backend runtime and device accelerator."""
     device = "mps" if torch.backends.mps.is_available() else "cpu"
     return {"status": "ok", "device": device}
 
 
 @app.get("/api/metrics")
-def get_metrics() -> Dict[str, Any]:
+def get_metrics() -> dict[str, Any]:
     """Returns precomputed benchmark evaluation metrics from backend/results/metrics.json."""
     metrics_file = BASE_DIR / "results" / "metrics.json"
     if not metrics_file.exists():
@@ -55,21 +52,21 @@ def get_metrics() -> Dict[str, Any]:
         )
 
     try:
-        with open(metrics_file, "r", encoding="utf-8") as f:
+        with open(metrics_file, encoding="utf-8") as f:
             return json.load(f)
     except Exception as exc:
         logger.exception("Failed to read metrics.json: %s", exc)
-        raise HTTPException(status_code=500, detail=f"Failed to read metrics file: {str(exc)}")
+        raise HTTPException(status_code=500, detail=f"Failed to read metrics file: {exc!s}")
 
 
 @app.get("/api/subjects")
-def get_subjects() -> Dict[str, Any]:
+def get_subjects() -> dict[str, Any]:
     """Returns metadata for all available BCI Competition IV-2a subjects."""
     subject_list = []
     for s in SUBJECTS:
         cache_path = CACHE_DIR / f"subject_{s}.npz"
         is_cached = cache_path.exists()
-        info: Dict[str, Any] = {
+        info: dict[str, Any] = {
             "id": s,
             "cached": is_cached,
             "channels": len(CHANNELS),
@@ -80,7 +77,7 @@ def get_subjects() -> Dict[str, Any]:
             try:
                 import numpy as np
                 data = np.load(cache_path, allow_pickle=True)
-                info["n_trials"] = int(len(data["y"]))
+                info["n_trials"] = len(data["y"])
                 info["sessions"] = list(set(data["sessions"]))
             except Exception:
                 pass
@@ -94,7 +91,7 @@ def get_subjects() -> Dict[str, Any]:
 
 
 @app.get("/api/csp/{subject}")
-def get_csp_patterns(subject: int) -> Dict[str, Any]:
+def get_csp_patterns(subject: int) -> dict[str, Any]:
     """Returns the spatial pattern weights per channel for the two most discriminative CSP components."""
     import joblib
     model_path = BASE_DIR / "models" / f"subject_{subject}_csp_lda.joblib"
@@ -120,7 +117,7 @@ def get_csp_patterns(subject: int) -> Dict[str, Any]:
         sub_metrics = {}
         if metrics_file.exists():
             try:
-                with open(metrics_file, "r", encoding="utf-8") as f:
+                with open(metrics_file, encoding="utf-8") as f:
                     m = json.load(f)
                     sub_metrics = m.get("subjects", {}).get(str(subject), {}).get("csp_lda", {})
             except Exception:
@@ -138,7 +135,7 @@ def get_csp_patterns(subject: int) -> Dict[str, Any]:
         }
     except Exception as exc:
         logger.exception("Failed to extract CSP patterns: %s", exc)
-        raise HTTPException(status_code=500, detail=f"Failed to extract CSP patterns: {str(exc)}")
+        raise HTTPException(status_code=500, detail=f"Failed to extract CSP patterns: {exc!s}")
 
 
 @app.get("/api/report")

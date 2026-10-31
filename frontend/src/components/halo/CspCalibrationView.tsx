@@ -228,7 +228,8 @@ export function CspCalibrationView({
               type="button"
               disabled={calibrating}
               onClick={() => runCalibration(sub)}
-              className={`w-7 h-7 rounded-full text-xs font-mono transition-all flex items-center justify-center ${
+              aria-label={`Calibrate Subject ${sub}`}
+              className={`min-w-[40px] min-h-[40px] rounded-full text-xs font-mono transition-all flex items-center justify-center ${
                 selectedSubject === sub
                   ? "bg-[#4CC9F0] text-[#07080A] font-bold shadow-[0_0_10px_rgba(76,201,240,0.6)]"
                   : "text-muted hover:text-text hover:bg-white/10"

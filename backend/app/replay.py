@@ -1,13 +1,14 @@
 import asyncio
 import logging
 import time
+from collections.abc import Callable, Coroutine
 from concurrent.futures import ThreadPoolExecutor
-from typing import Any, Callable, Coroutine, Dict, List, Optional, Tuple
+from typing import Any
+
 import numpy as np
 
 from app.config import (
     CHANNELS,
-    CLASSES,
     HOP_MS,
     MODELS,
     SFREQ,
@@ -32,7 +33,7 @@ class ReplaySession:
 
     def __init__(
         self,
-        broadcast_fn: Callable[[Dict[str, Any]], Coroutine[Any, Any, None]],
+        broadcast_fn: Callable[[dict[str, Any]], Coroutine[Any, Any, None]],
         subject: int = 1,
         model_name: str = "csp_lda",
         speed: float = 1.0,
@@ -43,44 +44,44 @@ class ReplaySession:
         self.speed: float = max(0.1, float(speed))
 
         # Runtime configuration
-        self.noise_snr_db: Optional[float] = None
+        self.noise_snr_db: float | None = None
         self.threshold: float = 0.50
         self.dwell_ms: float = 600.0
         self.mode: str = "open"  # "open" | "scripted"
 
         # State: "idle" | "running" | "paused" | "finished"
         self.state: str = "idle"
-        self._task: Optional[asyncio.Task] = None
-        self._trial_event: Optional[asyncio.Event] = None
+        self._task: asyncio.Task | None = None
+        self._trial_event: asyncio.Event | None = None
         self.thread_pool = ThreadPoolExecutor(max_workers=2)
         self.rng = np.random.default_rng(42)
 
         # Signal constants
         self.sfreq: int = SFREQ
-        self.channels: List[str] = list(CHANNELS)
+        self.channels: list[str] = list(CHANNELS)
         self.n_channels: int = len(self.channels)
         self.window_samples: int = int(round(WINDOW_S * self.sfreq))  # 500
         self.hop_samples: int = int(round((HOP_MS / 1000.0) * self.sfreq))  # 25
 
         # Ring buffer & baseline power state
         self.ring_buffer = np.zeros((self.n_channels, self.window_samples), dtype=np.float32)
-        self.mu_baseline: Optional[np.ndarray] = None
-        self.beta_baseline: Optional[np.ndarray] = None
+        self.mu_baseline: np.ndarray | None = None
+        self.beta_baseline: np.ndarray | None = None
 
         # Data arrays (held-out test session)
         self.X_test: np.ndarray = np.empty((0, self.n_channels, 0), dtype=np.float32)
         self.y_test: np.ndarray = np.empty((0,), dtype=np.int64)
-        self.trial_powers: List[float] = []
+        self.trial_powers: list[float] = []
         self.current_trial_idx: int = 0
-        self.trial_ids: List[str] = []
-        self.left_pool: List[int] = []
-        self.right_pool: List[int] = []
+        self.trial_ids: list[str] = []
+        self.left_pool: list[int] = []
+        self.right_pool: list[int] = []
         self.left_ptr: int = 0
         self.right_ptr: int = 0
-        self.last_trial_idx: Optional[int] = None
+        self.last_trial_idx: int | None = None
 
         # Decoder instance
-        self.decoder: Optional[Decoder] = None
+        self.decoder: Decoder | None = None
 
         # Monotonic clock state for drift-free scheduling
         self._anchor_mono_time: float = 0.0
@@ -150,7 +151,7 @@ class ReplaySession:
             logger.warning("Could not initialize decoder for subject %d, model %s: %s", self.subject, model_name, e)
             self.decoder = None
 
-    def get_hello_payload(self) -> Dict[str, Any]:
+    def get_hello_payload(self) -> dict[str, Any]:
         """Handshake payload conforming strictly to CONTRACTS.md."""
         return {
             "type": "hello",
@@ -163,7 +164,7 @@ class ReplaySession:
             "models": MODELS,
         }
 
-    def get_status_payload(self) -> Dict[str, Any]:
+    def get_status_payload(self) -> dict[str, Any]:
         """Status payload reflecting current engine state."""
         return {
             "type": "status",
@@ -291,11 +292,11 @@ class ReplaySession:
 
     async def set_config(
         self,
-        model: Optional[str] = None,
-        noise_snr_db: Optional[float] = None,
-        threshold: Optional[float] = None,
-        dwell_ms: Optional[float] = None,
-        mode: Optional[str] = None,
+        model: str | None = None,
+        noise_snr_db: float | None = None,
+        threshold: float | None = None,
+        dwell_ms: float | None = None,
+        mode: str | None = None,
     ) -> None:
         """Updates runtime configuration settings."""
         if model is not None and model != self.model_name:
@@ -316,7 +317,7 @@ class ReplaySession:
 
         await self.broadcast_fn(self.get_status_payload())
 
-    def _compute_bandpower_ratio(self, window: np.ndarray) -> Dict[str, List[float]]:
+    def _compute_bandpower_ratio(self, window: np.ndarray) -> dict[str, list[float]]:
         """Computes Mu (8-12 Hz) and Beta (13-30 Hz) power per channel and normalizes
 
         against that channel's rolling baseline (~20s EMA). Values < 1.0 indicate ERD.
@@ -475,7 +476,7 @@ class ReplaySession:
                             await asyncio.wait_for(self._trial_event.wait(), timeout=sleep_time)
                             interrupted = True
                             break
-                        except asyncio.TimeoutError:
+                        except TimeoutError:
                             pass
                     else:
                         await asyncio.sleep(0.0005)
@@ -561,7 +562,7 @@ class ReplaySession:
                                 try:
                                     await asyncio.wait_for(self._trial_event.wait(), timeout=sleep_time)
                                     break
-                                except asyncio.TimeoutError:
+                                except TimeoutError:
                                     pass
                             else:
                                 await asyncio.sleep(0.0005)
@@ -642,7 +643,7 @@ class ReplaySession:
                             try:
                                 await asyncio.wait_for(self._trial_event.wait(), timeout=sleep_time)
                                 break
-                            except asyncio.TimeoutError:
+                            except TimeoutError:
                                 pass
                         else:
                             await asyncio.sleep(0.0005)
@@ -665,7 +666,7 @@ class ReplaySession:
             self.state = "idle"
             await self.broadcast_fn({
                 "type": "error",
-                "message": f"Replay stream error: {str(exc)}",
+                "message": f"Replay stream error: {exc!s}",
             })
 
     def close(self) -> None:

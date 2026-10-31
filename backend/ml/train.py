@@ -5,16 +5,17 @@ import random
 import sys
 import time
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
+
 import joblib
 import numpy as np
 import torch
-import torch.nn as nn
 from braindecode.models import EEGNet
 from mne.decoding import CSP
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.metrics import accuracy_score
 from sklearn.pipeline import Pipeline
+from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
 
 # Add backend directory to sys.path
@@ -22,7 +23,7 @@ backend_dir = Path(__file__).resolve().parent.parent
 if str(backend_dir) not in sys.path:
     sys.path.insert(0, str(backend_dir))
 
-from app.config import CACHE_DIR, CHANNELS, MODELS_DIR, SFREQ, WINDOW_S
+from app.config import MODELS_DIR, SFREQ, WINDOW_S
 from ml.data import crop_windows, load_subject
 from ml.preprocess import prepare_batch
 
@@ -85,8 +86,8 @@ def train_eegnet(
     batch_size: int = 32,
     lr: float = 1e-3,
     patience: int = 12,
-    device: Optional[str] = None,
-) -> Tuple[nn.Module, Dict[str, Any]]:
+    device: str | None = None,
+) -> tuple[nn.Module, dict[str, Any]]:
     """Trains a braindecode EEGNet with trial-grouped validation split and early stopping.
 
     Parameters
@@ -159,7 +160,7 @@ def train_eegnet(
     )
 
     best_val_loss = float("inf")
-    best_weights: Optional[Dict[str, torch.Tensor]] = None
+    best_weights: dict[str, torch.Tensor] | None = None
     patience_counter = 0
     stopped_epoch = max_epochs
 
@@ -186,6 +187,7 @@ def train_eegnet(
 
         val_loss /= len(X_va)
         val_acc = val_correct / len(X_va)
+        logger.debug("Epoch %d: val_loss=%.4f, val_acc=%.4f", epoch, val_loss, val_acc)
 
         if val_loss < best_val_loss:
             best_val_loss = val_loss
@@ -232,8 +234,8 @@ def compute_trial_accuracy(
 
 def train_and_save_all_for_subject(
     subject: int,
-    models: Optional[List[str]] = None,
-) -> Dict[str, Dict[str, Any]]:
+    models: list[str] | None = None,
+) -> dict[str, dict[str, Any]]:
     """Trains requested models for a single subject on 0train, evaluates on 1test, and saves artifacts."""
     seed_everything(42)
     if models is None:
@@ -256,7 +258,7 @@ def train_and_save_all_for_subject(
     X_train_prep = prepare_batch(X_train_win, sfreq=SFREQ)
     X_test_prep = prepare_batch(X_test_win, sfreq=SFREQ)
 
-    results: Dict[str, Dict[str, Any]] = {}
+    results: dict[str, dict[str, Any]] = {}
 
     # 1. CSP + LDA
     if "csp_lda" in models:
@@ -378,7 +380,7 @@ def main():
     args = parser.parse_args()
 
     print("\n" + "=" * 78)
-    print(f"🚀 HALO BCI TRAINING PIPELINE")
+    print("🚀 HALO BCI TRAINING PIPELINE")
     print(f"   Models: {args.models} | Subjects: {args.subjects}")
     print(f"   Device: {'mps' if torch.backends.mps.is_available() else 'cpu'}")
     print("=" * 78 + "\n")

@@ -117,11 +117,12 @@ export default function AssistPage() {
             <button
               onClick={() => setActiveTab("arena")}
               className={cn(
-                "flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-mono font-medium transition-all",
+                "flex items-center gap-1.5 px-4 py-2 min-h-[40px] rounded-full text-xs font-mono font-medium transition-all",
                 activeTab === "arena"
                   ? "bg-white/15 text-white shadow-sm"
                   : "text-muted hover:text-text"
               )}
+              aria-label="Select Arena Interface"
             >
               <Crosshair className="w-3.5 h-3.5 text-[#4CC9F0]" />
               <span>Arena</span>
@@ -130,11 +131,12 @@ export default function AssistPage() {
             <button
               onClick={() => setActiveTab("keyboard")}
               className={cn(
-                "flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-mono font-medium transition-all",
+                "flex items-center gap-1.5 px-4 py-2 min-h-[40px] rounded-full text-xs font-mono font-medium transition-all",
                 activeTab === "keyboard"
                   ? "bg-white/15 text-white shadow-sm"
                   : "text-muted hover:text-text"
               )}
+              aria-label="Select Keyboard Interface"
             >
               <Keyboard className="w-3.5 h-3.5 text-[#FFB547]" />
               <span>Keyboard</span>
@@ -143,11 +145,12 @@ export default function AssistPage() {
             <button
               onClick={() => setActiveTab("commands")}
               className={cn(
-                "flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-mono font-medium transition-all",
+                "flex items-center gap-1.5 px-4 py-2 min-h-[40px] rounded-full text-xs font-mono font-medium transition-all",
                 activeTab === "commands"
                   ? "bg-white/15 text-white shadow-sm"
                   : "text-muted hover:text-text"
               )}
+              aria-label="Select Commands Interface"
             >
               <HeartHandshake className="w-3.5 h-3.5 text-emerald-400" />
               <span>Commands</span>
@@ -159,12 +162,13 @@ export default function AssistPage() {
             <button
               onClick={() => setUserMode("auto")}
               className={cn(
-                "flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono transition-all",
+                "flex items-center gap-1.5 px-3.5 py-2 min-h-[40px] rounded-full text-xs font-mono transition-all",
                 userMode === "auto"
                   ? "bg-[#4CC9F0]/20 text-[#4CC9F0] border border-[#4CC9F0]/30 font-semibold"
                   : "text-muted hover:text-text"
               )}
               title="Simulated user pursues the target task automatically"
+              aria-label="Switch to Auto mode"
             >
               <Bot className="w-3.5 h-3.5" />
               <span>Auto</span>
@@ -173,12 +177,13 @@ export default function AssistPage() {
             <button
               onClick={() => setUserMode("manual")}
               className={cn(
-                "flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono transition-all",
+                "flex items-center gap-1.5 px-3.5 py-2 min-h-[40px] rounded-full text-xs font-mono transition-all",
                 userMode === "manual"
                   ? "bg-[#FFB547]/20 text-[#FFB547] border border-[#FFB547]/30 font-semibold"
                   : "text-muted hover:text-text"
               )}
               title="Manual mode: press Left or Right arrow key to imagine that hand"
+              aria-label="Switch to Manual mode"
             >
               <User className="w-3.5 h-3.5" />
               <span>Manual</span>

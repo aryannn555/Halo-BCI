@@ -211,7 +211,7 @@ export function TopNav() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "relative flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium transition-colors select-none z-10",
+                  "relative flex items-center gap-2 px-3.5 py-2 min-h-[40px] rounded-full text-xs font-medium transition-colors select-none z-10",
                   isActive ? "text-white" : "text-muted hover:text-text"
                 )}
               >
@@ -251,8 +251,9 @@ export function TopNav() {
           <div className="relative" ref={subjectMenuRef}>
             <button
               onClick={() => setSubjectMenuOpen((p) => !p)}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-full halo-glass hover:bg-white/[0.08] text-xs font-mono text-text transition-colors"
+              className="flex items-center gap-1.5 px-3 min-h-[40px] rounded-full halo-glass hover:bg-white/[0.08] text-xs font-mono text-text transition-colors"
               title="Select BCI subject (1..9)"
+              aria-label="Select BCI subject"
             >
               <span className="text-muted text-[11px]">S</span>
               <span className="font-semibold">{currentSubject}</span>
@@ -269,7 +270,7 @@ export function TopNav() {
                     key={s}
                     onClick={() => handleSubjectSelect(s)}
                     className={cn(
-                      "w-full px-3 py-1.5 text-xs text-left flex items-center justify-between hover:bg-white/[0.08] transition-colors",
+                      "w-full px-3 py-2 min-h-[40px] text-xs text-left flex items-center justify-between hover:bg-white/[0.08] transition-colors",
                       s === currentSubject ? "text-[#4CC9F0] font-semibold" : "text-muted"
                     )}
                   >
@@ -284,8 +285,9 @@ export function TopNav() {
           {/* Speed Control Pill */}
           <button
             onClick={handleSpeedCycle}
-            className="flex items-center gap-1 px-2.5 py-1 rounded-full halo-glass hover:bg-white/[0.08] text-xs font-mono text-text transition-colors"
+            className="flex items-center gap-1 px-3 min-h-[40px] rounded-full halo-glass hover:bg-white/[0.08] text-xs font-mono text-text transition-colors"
             title="Toggle playback speed (1.0x / 2.0x / 4.0x)"
+            aria-label={`Playback speed: ${currentSpeed.toFixed(1)}x`}
           >
             <span className="text-muted text-[11px]">Speed</span>
             <span className="font-semibold text-amber-400">{currentSpeed.toFixed(1)}x</span>
@@ -295,14 +297,15 @@ export function TopNav() {
           <button
             onClick={handlePlayToggle}
             className={cn(
-              "flex items-center justify-center w-8 h-8 rounded-full border transition-all duration-200 shadow-sm",
+              "flex items-center justify-center w-10 h-10 min-w-[40px] min-h-[40px] rounded-full border transition-all duration-200 shadow-sm",
               isRunning
                 ? "bg-amber-500/15 border-amber-500/30 text-amber-300 hover:bg-amber-500/25"
                 : "bg-emerald-500/15 border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/25"
             )}
             title={isRunning ? "Pause stream (Space)" : "Start stream (Space)"}
+            aria-label={isRunning ? "Pause stream" : "Start stream"}
           >
-            {isRunning ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 ml-0.5" />}
+            {isRunning ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}
           </button>
 
           {/* Connection / Offline Badge */}
@@ -310,7 +313,7 @@ export function TopNav() {
             <Pill
               variant="amber"
               size="sm"
-              className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-mono shadow-sm"
+              className="flex items-center gap-1.5 px-3 min-h-[40px] text-xs font-mono shadow-sm"
               title="Replaying cached 120s Subject 3 session"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
@@ -324,8 +327,9 @@ export function TopNav() {
                 startOfflineReplay();
                 toast.success("Started offline replay of saved session");
               }}
-              className="px-2.5 py-1 rounded-full text-xs font-mono bg-purple-500/20 text-purple-300 border border-purple-500/40 hover:bg-purple-500/30 transition-all flex items-center gap-1.5 animate-pulse"
+              className="px-3 min-h-[40px] rounded-full text-xs font-mono bg-purple-500/20 text-purple-300 border border-purple-500/40 hover:bg-purple-500/30 transition-all flex items-center gap-1.5 animate-pulse"
               title="FastAPI server offline. Click to launch 120s saved session."
+              aria-label="Launch offline replay"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
               <span>Offline Replay</span>
@@ -334,7 +338,7 @@ export function TopNav() {
             <Pill
               variant="glass"
               size="sm"
-              className="flex items-center gap-1.5 px-2.5 py-1 text-xs"
+              className="flex items-center gap-1.5 px-3 min-h-[40px] text-xs"
             >
               <StatusDot
                 status={connected ? "online" : connecting ? "connecting" : "offline"}
@@ -350,28 +354,31 @@ export function TopNav() {
           {/* Fullscreen Toggle */}
           <button
             onClick={toggleFullscreen}
-            className="p-1.5 rounded-full halo-glass hover:bg-white/[0.08] text-muted hover:text-text transition-colors"
+            className="w-10 h-10 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-full halo-glass hover:bg-white/[0.08] text-muted hover:text-text transition-colors"
             title={isFullscreen ? "Exit Fullscreen (F)" : "Enter Fullscreen (F)"}
+            aria-label={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
           >
-            {isFullscreen ? <Minimize className="w-3.5 h-3.5" /> : <Maximize className="w-3.5 h-3.5" />}
+            {isFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
           </button>
 
           {/* Command Palette Trigger */}
           <button
             onClick={() => setCmdOpen(true)}
-            className="p-1.5 rounded-full halo-glass hover:bg-white/[0.08] text-muted hover:text-text transition-colors"
+            className="w-10 h-10 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-full halo-glass hover:bg-white/[0.08] text-muted hover:text-text transition-colors"
             title="Command Palette (⌘K)"
+            aria-label="Open Command Palette"
           >
-            <Command className="w-3.5 h-3.5" />
+            <Command className="w-4 h-4" />
           </button>
 
           {/* Help Shortcuts Dialog Trigger */}
           <button
             onClick={() => setHelpOpen(true)}
-            className="p-1.5 rounded-full halo-glass hover:bg-white/[0.08] text-muted hover:text-text transition-colors"
+            className="w-10 h-10 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-full halo-glass hover:bg-white/[0.08] text-muted hover:text-text transition-colors"
             title="Shortcuts Guide (?)"
+            aria-label="Open Shortcuts Guide"
           >
-            <HelpCircle className="w-3.5 h-3.5" />
+            <HelpCircle className="w-4 h-4" />
           </button>
         </div>
       </header>

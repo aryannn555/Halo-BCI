@@ -1,3 +1,5 @@
+export PATH := $(HOME)/.local/bin:$(HOME)/.local/node/bin:$(PATH)
+
 .PHONY: dev dev-backend dev-frontend install test-health demo evaluate export-session test
 
 demo:
@@ -5,7 +7,7 @@ demo:
 	@trap 'kill 0' EXIT; \
 	(cd backend && .venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000) & \
 	(cd frontend && npm run dev) & \
-	sleep 3; \
+	sleep 5; \
 	open http://localhost:3000 || xdg-open http://localhost:3000 || echo "Open http://localhost:3000 in your browser"; \
 	wait
 

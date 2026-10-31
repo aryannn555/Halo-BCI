@@ -1,14 +1,12 @@
 import json
 import logging
-from pathlib import Path
-from typing import Any, Dict, List, Set
+from typing import Any
+
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 from app.config import (
     CHANNELS,
-    CLASSES,
     HOP_MS,
-    MODELS,
     MODELS_DIR,
     SFREQ,
     SUBJECTS,
@@ -20,7 +18,7 @@ logger = logging.getLogger("halo.ws")
 router = APIRouter()
 
 
-def get_available_models() -> List[str]:
+def get_available_models() -> list[str]:
     """Dynamically discovers fitted model architectures from backend/models/."""
     available = set()
     if MODELS_DIR.exists():
@@ -49,7 +47,7 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
     await websocket.accept()
     logger.info("Client connected to /ws from %s", websocket.client)
 
-    async def send_json(payload: Dict[str, Any]) -> None:
+    async def send_json(payload: dict[str, Any]) -> None:
         try:
             await websocket.send_text(json.dumps(payload))
         except Exception:
@@ -122,6 +120,7 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
                                 "type": "error",
                                 "message": f"Unknown subject ID: {s_int}. Available: {SUBJECTS}",
                             })
+                            continue
                         elif s_int != session.subject:
                             await session.set_subject(s_int)
                     except ValueError:
@@ -129,6 +128,7 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
                             "type": "error",
                             "message": f"Invalid subject argument: '{subj_arg}'. Must be an integer.",
                         })
+                        continue
 
                 # Handle speed change if provided
                 if speed_arg is not None:
@@ -140,6 +140,7 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
                             "type": "error",
                             "message": f"Invalid speed argument: '{speed_arg}'. Must be a number.",
                         })
+                        continue
 
                 # Dispatch actions
                 if action == "start":
@@ -157,9 +158,7 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
                         })
                     else:
                         await session.queue_trial(want_arg)
-                elif action == "change_subject":
-                    pass  # Already handled above
-                elif action == "change_speed":
+                elif action == "change_subject" or action == "change_speed":
                     pass  # Already handled above
                 else:
                     await send_json({
@@ -181,14 +180,14 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
                             "type": "error",
                             "message": f"Requested model '{model_arg}' not found. Available models: {available_models}",
                         })
-                        model_arg = None
+                        continue
 
                 if mode_arg is not None and mode_arg not in ("open", "scripted"):
                     await send_json({
                         "type": "error",
                         "message": f"Invalid mode argument: '{mode_arg}'. Must be 'open' or 'scripted'.",
                     })
-                    mode_arg = None
+                    continue
 
                 await session.set_config(
                     model=model_arg,
@@ -209,7 +208,7 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
     except Exception as exc:
         logger.exception("Unexpected error in WebSocket session: %s", exc)
         try:
-            await send_json({"type": "error", "message": f"Internal server error: {str(exc)}"})
+            await send_json({"type": "error", "message": f"Internal server error: {exc!s}"})
         except Exception:
             pass
     finally:

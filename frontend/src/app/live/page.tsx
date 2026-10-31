@@ -67,7 +67,8 @@ export default function LivePage() {
           <Button
             onClick={handleToggleNoise}
             variant="outline"
-            className="rounded-full h-8 px-3 bg-white/[0.04] hover:bg-white/[0.08] border-white/10 text-xs text-text flex items-center gap-1.5"
+            aria-label="Toggle pink noise"
+            className="rounded-full min-h-[40px] px-3.5 bg-white/[0.04] hover:bg-white/[0.08] border-white/10 text-xs text-text flex items-center gap-1.5"
             title="Toggle 10 dB SNR pink noise (N)"
           >
             {noiseSnr !== null ? (
@@ -87,15 +88,17 @@ export default function LivePage() {
           <Button
             onClick={handleResetReplay}
             variant="outline"
-            className="rounded-full h-8 px-2.5 bg-white/[0.04] hover:bg-white/[0.08] border-white/10 text-xs text-muted hover:text-text"
+            aria-label="Reset stream to trial 1"
+            className="rounded-full min-w-[40px] min-h-[40px] px-2.5 bg-white/[0.04] hover:bg-white/[0.08] border-white/10 text-xs text-muted hover:text-text flex items-center justify-center"
             title="Reset stream to trial 1"
           >
-            <RotateCcw className="w-3.5 h-3.5" />
+            <RotateCcw className="w-4 h-4" />
           </Button>
 
           <Button
             onClick={handleToggleReplay}
-            className={`rounded-full h-8 px-4 text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-all ${
+            aria-label={isRunning ? "Pause Stream" : "Start Stream"}
+            className={`rounded-full min-h-[40px] px-4 text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-all ${
               isRunning
                 ? "bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 border border-amber-500/30"
                 : "bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 border border-emerald-500/30"

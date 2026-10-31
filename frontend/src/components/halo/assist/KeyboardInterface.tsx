@@ -209,8 +209,9 @@ export function KeyboardInterface({
             <button
               key={phrase}
               onClick={() => handlePresetPhrase(phrase)}
+              aria-label={`Load demo phrase ${phrase}`}
               className={cn(
-                "px-2.5 py-0.5 rounded-full text-[11px] font-semibold transition-all border shadow-sm",
+                "px-3 min-h-[40px] rounded-full text-[11px] font-semibold transition-all border shadow-sm flex items-center justify-center",
                 demoPhrase === phrase
                   ? "bg-white/15 text-white border-white/30 shadow-sm"
                   : "bg-white/[0.03] text-muted hover:text-text border-white/5"
@@ -221,10 +222,11 @@ export function KeyboardInterface({
           ))}
           <button
             onClick={handleClearText}
-            className="p-1 text-muted/60 hover:text-text rounded-md hover:bg-white/5 ml-1 transition-colors"
+            aria-label="Clear speller text field"
+            className="min-w-[40px] min-h-[40px] text-muted/60 hover:text-text rounded-full hover:bg-white/5 ml-1 transition-colors flex items-center justify-center border border-white/5"
             title="Clear text field"
           >
-            <RotateCcw className="w-3 h-3" />
+            <RotateCcw className="w-3.5 h-3.5" />
           </button>
         </div>
       </div>

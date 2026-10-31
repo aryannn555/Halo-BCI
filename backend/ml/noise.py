@@ -1,4 +1,4 @@
-from typing import List, Optional
+
 import numpy as np
 
 # Channel names ordered as in BNCI2014_001
@@ -31,7 +31,7 @@ _CHANNEL_WEIGHTS = {
 def add_white_noise(
     x: np.ndarray,
     snr_db: float,
-    rng: Optional[np.random.Generator] = None,
+    rng: np.random.Generator | None = None,
 ) -> np.ndarray:
     """Adds zero-mean Gaussian white noise calibrated to the target SNR (dB).
 
@@ -73,7 +73,7 @@ def add_mains(
     sfreq: float = 250.0,
     amplitude_uv: float = 5.0,
     freq: float = 50.0,
-    rng: Optional[np.random.Generator] = None,
+    rng: np.random.Generator | None = None,
 ) -> np.ndarray:
     """Adds 50 Hz powerline mains interference sine waves with independent phase per channel.
 
@@ -110,8 +110,8 @@ def add_blink_artifacts(
     sfreq: float = 250.0,
     rate_per_min: float = 12.0,
     amplitude_uv: float = 50.0,
-    channel_names: Optional[List[str]] = None,
-    rng: Optional[np.random.Generator] = None,
+    channel_names: list[str] | None = None,
+    rng: np.random.Generator | None = None,
 ) -> np.ndarray:
     """Adds slow, large frontal-dominant ocular blink bumps (monophasic Gaussian deflections).
 
@@ -175,8 +175,8 @@ def add_blink_artifacts(
 def corrupt(
     x: np.ndarray,
     sfreq: float = 250.0,
-    snr_db: Optional[float] = None,
-    rng: Optional[np.random.Generator] = None,
+    snr_db: float | None = None,
+    rng: np.random.Generator | None = None,
 ) -> np.ndarray:
     """Combines white noise, 50 Hz mains hum, and frontal blink artifacts into a composite
     realistic corrupted signal achieving the exact target SNR (dB).

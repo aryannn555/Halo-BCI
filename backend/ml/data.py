@@ -3,7 +3,7 @@ import logging
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Optional, Tuple
+
 import numpy as np
 import pandas as pd
 
@@ -30,10 +30,10 @@ class TrialMarker:
 class SubjectData:
     subject_id: int
     session: str
-    channels: List[str]
+    channels: list[str]
     sfreq: float
     continuous_eeg: np.ndarray  # (n_channels, total_samples) in microvolts
-    trial_markers: List[TrialMarker]
+    trial_markers: list[TrialMarker]
     X_epochs: np.ndarray  # (n_trials, n_channels, n_samples)
     y_epochs: np.ndarray  # (n_trials,) -> 0 for left, 1 for right
     is_synthetic: bool = False
@@ -44,7 +44,7 @@ def _generate_synthetic_subject_epochs(
     n_trials: int = 288,
     n_channels: int = 22,
     n_samples: int = 1001,
-) -> Tuple[np.ndarray, np.ndarray, List[str], pd.DataFrame]:
+) -> tuple[np.ndarray, np.ndarray, list[str], pd.DataFrame]:
     """Generates synthetic neurophysiologically accurate motor-imagery epochs (trials, 22, 1001).
 
     Used when offline or when dataset download is interrupted.
@@ -84,7 +84,7 @@ def _generate_synthetic_subject_epochs(
     return X, y, list(CHANNELS), metadata
 
 
-def load_subject(subject: int) -> Tuple[np.ndarray, np.ndarray, List[str], pd.DataFrame]:
+def load_subject(subject: int) -> tuple[np.ndarray, np.ndarray, list[str], pd.DataFrame]:
     """Loads BCI Competition IV 2a subject data using MOABB LeftRightImagery paradigm.
 
     Uses broad bandpass (fmin=4, fmax=40, resample=250) so that raw spectral content
@@ -156,11 +156,11 @@ def load_subject(subject: int) -> Tuple[np.ndarray, np.ndarray, List[str], pd.Da
 def crop_windows(
     X: np.ndarray,
     y: np.ndarray,
-    metadata: Optional[pd.DataFrame] = None,
+    metadata: pd.DataFrame | None = None,
     window_s: float = 2.0,
     stride_s: float = 0.25,
     sfreq: int = SFREQ,
-) -> Tuple[np.ndarray, np.ndarray, np.ndarray, Optional[pd.DataFrame]]:
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, pd.DataFrame | None]:
     """Crops full-duration epochs (e.g. 4.0s) into sliding windows (e.g. 2.0s) with a stride (0.25s).
 
     Parameters
@@ -251,7 +251,7 @@ def load_subject_data(subject_id: int, session: str = "0train") -> SubjectData:
     total_length = total_trials * (trial_samples + rest_samples)
     continuous = np.zeros((len(channels), total_length), dtype=np.float32)
 
-    markers: List[TrialMarker] = []
+    markers: list[TrialMarker] = []
     current_idx = rest_samples
 
     for i in range(total_trials):

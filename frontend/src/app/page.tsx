@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import {
@@ -482,7 +482,7 @@ export default function OverviewPage() {
               <Button
                 onClick={() => setAboutOpen(true)}
                 variant="ghost"
-                className="rounded-full h-13 px-4 text-xs font-mono text-zinc-400 hover:text-white flex items-center gap-1.5"
+                className="rounded-full min-h-[40px] px-4 text-xs font-mono text-zinc-400 hover:text-white flex items-center gap-1.5"
               >
                 <Info className="w-3.5 h-3.5 text-zinc-400" />
                 <span>About &amp; Citations</span>

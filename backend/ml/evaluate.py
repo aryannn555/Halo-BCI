@@ -3,12 +3,10 @@ import json
 import logging
 import math
 import sys
-import time
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
-import joblib
+from typing import Any
+
 import numpy as np
-import torch
 from sklearn.metrics import (
     accuracy_score,
     cohen_kappa_score,
@@ -22,15 +20,14 @@ backend_dir = Path(__file__).resolve().parent.parent
 if str(backend_dir) not in sys.path:
     sys.path.insert(0, str(backend_dir))
 
-from app.config import BASE_DIR, CACHE_DIR, CHANNELS, MODELS_DIR, SFREQ, WINDOW_S
+from app.config import BASE_DIR, SFREQ, WINDOW_S
 from ml.data import crop_windows, load_subject
-from ml.decoder import Decoder, get_model
+from ml.decoder import Decoder
 
 # Backwards compatibility alias
 LoadedModel = Decoder
 
 from ml.noise import corrupt
-from ml.preprocess import prepare_batch, prepare_window
 
 logger = logging.getLogger("halo.evaluate")
 RESULTS_DIR = BASE_DIR / "results"
@@ -81,8 +78,8 @@ def calculate_wolpaw_itr(accuracy: float, n_classes: int = 2, trial_duration_s: 
 def evaluate_subject_model(
     subject: int,
     model_name: str,
-    device: Optional[str] = None,
-) -> Dict[str, Any]:
+    device: str | None = None,
+) -> dict[str, Any]:
     """Evaluates a fitted model on held-out session (1test) at window and trial levels.
 
     Parameters
@@ -112,7 +109,7 @@ def evaluate_subject_model(
 
     # 1. Window-level evaluation & latency tracking
     window_probs = np.zeros((n_test_windows, 2), dtype=np.float64)
-    latencies_ms: List[float] = []
+    latencies_ms: list[float] = []
 
     # Reset smoother at start of evaluation
     decoder.reset()
@@ -185,9 +182,9 @@ def evaluate_subject_model(
 
 def run_robustness_sweep(
     best_model: str,
-    subjects: List[int],
-    snr_levels: List[Optional[float]],
-) -> List[Dict[str, Any]]:
+    subjects: list[int],
+    snr_levels: list[float | None],
+) -> list[dict[str, Any]]:
     """Sweeps noise SNR levels [inf, 20, 10, 5, 0, -5] dB across subjects.
 
     Noise is injected BEFORE prepare_window as in physical environments.
@@ -244,11 +241,11 @@ def run_robustness_sweep(
 
 
 def run_full_evaluation(
-    models: List[str] = ["csp_lda", "eegnet"],
-    subjects: List[int] = [1, 2, 3, 4, 5, 6, 7, 8, 9],
-) -> Dict[str, Any]:
+    models: list[str] = ["csp_lda", "eegnet"],
+    subjects: list[int] = [1, 2, 3, 4, 5, 6, 7, 8, 9],
+) -> dict[str, Any]:
     """Runs complete benchmark evaluation, writes backend/results/metrics.json, and prints markdown table."""
-    all_evals: Dict[str, Dict[str, Any]] = {str(s): {} for s in subjects}
+    all_evals: dict[str, dict[str, Any]] = {str(s): {} for s in subjects}
 
     for subj in subjects:
         for m in models:
@@ -256,7 +253,7 @@ def run_full_evaluation(
             all_evals[str(subj)][m] = metrics
 
     # Compute summary block (mean and std across subjects per model)
-    summary: Dict[str, Dict[str, Any]] = {}
+    summary: dict[str, dict[str, Any]] = {}
     for m in models:
         win_accs = [all_evals[str(s)][m]["window_accuracy"] for s in subjects]
         trial_accs = [all_evals[str(s)][m]["trial_accuracy"] for s in subjects]
@@ -283,7 +280,7 @@ def run_full_evaluation(
     default_model = max(models, key=lambda m: summary[m]["mean_trial_accuracy"])
 
     # Robustness sweep across [inf, 20, 10, 5, 0, -5] dB
-    snr_levels: List[Optional[float]] = [float("inf"), 20.0, 10.0, 5.0, 0.0, -5.0]
+    snr_levels: list[float | None] = [float("inf"), 20.0, 10.0, 5.0, 0.0, -5.0]
     robustness = run_robustness_sweep(best_model=default_model, subjects=subjects, snr_levels=snr_levels)
 
     full_report = {
@@ -312,7 +309,7 @@ def run_full_evaluation(
     return full_report
 
 
-def print_markdown_report(report: Dict[str, Any], subjects: List[int], models: List[str]) -> None:
+def print_markdown_report(report: dict[str, Any], subjects: list[int], models: list[str]) -> None:
     """Formats and prints an Apple-grade, high-contrast Markdown report to the console."""
     summary = report["summary"]
     default_m = report["default_model"]
@@ -323,10 +320,10 @@ def print_markdown_report(report: Dict[str, Any], subjects: List[int], models: L
 
     print("### Model Performance Summary Across All Subjects\n")
     print(
-        f"| Model | Trial Acc (Mean ± Std) | Window Acc (Mean ± Std) | Cohen's Kappa | Macro F1 | ITR (bits/min) | Median Latency | p95 Latency |"
+        "| Model | Trial Acc (Mean ± Std) | Window Acc (Mean ± Std) | Cohen's Kappa | Macro F1 | ITR (bits/min) | Median Latency | p95 Latency |"
     )
     print(
-        f"| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |"
+        "| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |"
     )
 
     for m in models:

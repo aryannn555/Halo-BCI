@@ -1,11 +1,13 @@
 import json
 from pathlib import Path
+
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib import gridspec
 from matplotlib.backends.backend_pdf import PdfPages
-import matplotlib.gridspec as gridspec
 
 # Paths
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -18,7 +20,7 @@ MD_OUT_PATH = BASE_DIR / "TEST_BENCHMARK_REPORT.md"
 def load_metrics():
     if not METRICS_PATH.exists():
         raise FileNotFoundError(f"Metrics file not found at {METRICS_PATH}")
-    with open(METRICS_PATH, "r", encoding="utf-8") as f:
+    with open(METRICS_PATH, encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -26,7 +28,6 @@ def build_markdown_report(metrics):
     summary = metrics["summary"]
     csp = summary["csp_lda"]
     eegnet = summary["eegnet"]
-    def_m = metrics["default_model"]
     subjects = metrics["subjects_evaluated"]
     robustness = metrics["robustness_sweep"]
 
@@ -88,7 +89,7 @@ The evaluation was performed across all 9 subjects. Each subject contains 144 tr
         status = "🟢 Passed Gate" if c["window_accuracy"] >= 0.60 else "🟡 BCI-Illiterate"
         md += f"| **Subj {s:02d}** | {c['trial_accuracy']*100:.1f}% | {c['window_accuracy']*100:.1f}% | {e['trial_accuracy']*100:.1f}% | {e['window_accuracy']*100:.1f}% | {c['trial_kappa']:.3f} | {left_f1:.3f} | {right_f1:.3f} | {status} |\n"
 
-    md += f"""
+    md += """
 > [!NOTE]
 > **Subject 02 Observations**: Subject 2 is known in BCI Competition IV-2a literature as a classic "BCI-illiterate" subject with weak sensorimotor rhythm modulation (published literature benchmark for Subject 2 averages 52–58%). Halo correctly identified this subject while maintaining >87% on Subject 1 and 100% on calibrated motor-imagery profiles.
 
@@ -255,8 +256,8 @@ def generate_pdf_report(metrics):
         csp_accs = [metrics["subjects"][str(s)]["csp_lda"]["trial_accuracy"] * 100 for s in subjects]
         eeg_accs = [metrics["subjects"][str(s)]["eegnet"]["trial_accuracy"] * 100 for s in subjects]
 
-        b1 = ax_bar.bar(x_indices - w/2, csp_accs, width=w, label="CSP + LDA (Default)", color=COLOR_CYAN, edgecolor=COLOR_BORDER)
-        b2 = ax_bar.bar(x_indices + w/2, eeg_accs, width=w, label="EEGNet (ConvNet)", color=COLOR_AMBER, edgecolor=COLOR_BORDER)
+        ax_bar.bar(x_indices - w/2, csp_accs, width=w, label="CSP + LDA (Default)", color=COLOR_CYAN, edgecolor=COLOR_BORDER)
+        ax_bar.bar(x_indices + w/2, eeg_accs, width=w, label="EEGNet (ConvNet)", color=COLOR_AMBER, edgecolor=COLOR_BORDER)
 
         ax_bar.axhline(y=60.0, color=COLOR_RED, linestyle="--", linewidth=1.2, label="Quality Gate (60%)")
         ax_bar.set_ylabel("Trial Accuracy (%)", color=COLOR_PRIMARY, fontsize=9)
@@ -334,7 +335,7 @@ def generate_pdf_report(metrics):
 
 def main():
     metrics = load_metrics()
-    
+
     # 1. Generate Markdown report
     md_content = build_markdown_report(metrics)
     with open(MD_OUT_PATH, "w", encoding="utf-8") as f:

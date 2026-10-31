@@ -1,15 +1,15 @@
-from pathlib import Path
-from typing import Any, Dict, Optional, Tuple
 import json
 import logging
 import time
+from typing import Any
+
 import joblib
 import numpy as np
 import torch
-import torch.nn as nn
 from braindecode.models import EEGNet
+from torch import nn
 
-from app.config import CACHE_DIR, CHANNELS, MODELS_DIR, SFREQ, WINDOW_S
+from app.config import CHANNELS, MODELS_DIR, SFREQ, WINDOW_S
 from ml.preprocess import prepare_window
 
 logger = logging.getLogger("halo.decoder")
@@ -29,7 +29,7 @@ class Decoder:
         subject: int = 1,
         model_name: str = "csp_lda",
         alpha: float = 0.35,
-        device: Optional[str] = None,
+        device: str | None = None,
     ):
         self.subject = subject
         self.model_name = model_name
@@ -37,10 +37,10 @@ class Decoder:
         self.device = device or ("mps" if torch.backends.mps.is_available() else "cpu")
 
         self.pipeline: Any = None
-        self.torch_model: Optional[nn.Module] = None
-        self.metadata: Dict[str, Any] = {}
+        self.torch_model: nn.Module | None = None
+        self.metadata: dict[str, Any] = {}
 
-        self.smoothed_proba: Optional[np.ndarray] = None
+        self.smoothed_proba: np.ndarray | None = None
         self.last_latency_ms: float = 0.0
 
         self._load()
@@ -64,7 +64,7 @@ class Decoder:
 
         if json_path.exists():
             try:
-                with open(json_path, "r", encoding="utf-8") as f:
+                with open(json_path, encoding="utf-8") as f:
                     self.metadata = json.load(f)
             except Exception as e:
                 logger.warning("Could not load metadata from %s: %s", json_path, e)
@@ -104,6 +104,10 @@ class Decoder:
         """Resets the EMA smoothed probability filter between trials."""
         self.smoothed_proba = None
 
+    def reset_trial(self) -> None:
+        """Alias for reset() between trials."""
+        self.reset()
+
     def predict_proba(self, window: np.ndarray, sfreq: int = SFREQ) -> np.ndarray:
         """Runs inference on a single EEG window of shape (n_channels, n_samples).
 
@@ -120,7 +124,7 @@ class Decoder:
 
     def predict(
         self, window: np.ndarray, sfreq: int = SFREQ
-    ) -> Tuple[np.ndarray, float]:
+    ) -> tuple[np.ndarray, float]:
         """Runs inference and returns both smoothed probabilities and latency in ms.
 
         Parameters
@@ -174,7 +178,7 @@ class Decoder:
 
     def predict_window(
         self, window: np.ndarray, sfreq: float = float(SFREQ)
-    ) -> Tuple[float, float, str, float, float]:
+    ) -> tuple[float, float, str, float, float]:
         """Convenience method matching live replay engine contract.
 
         Returns
@@ -190,7 +194,7 @@ class Decoder:
         return (p_left, p_right, label, confidence, lat)
 
 
-_MODEL_REGISTRY: Dict[Tuple[int, str], Decoder] = {}
+_MODEL_REGISTRY: dict[tuple[int, str], Decoder] = {}
 
 
 def get_model(model_name: str, subject_id: int = 1) -> Decoder:

@@ -95,7 +95,8 @@ export function MethodologyNote({
           <Button
             onClick={handleCopySummary}
             variant="outline"
-            className="rounded-full h-8 px-3.5 bg-white/[0.04] hover:bg-white/[0.08] border-white/10 text-xs text-text flex items-center gap-1.5 shadow-sm font-mono"
+            aria-label="Copy Benchmark Summary to Clipboard"
+            className="rounded-full min-h-[40px] px-4 bg-white/[0.04] hover:bg-white/[0.08] border-white/10 text-xs text-text flex items-center gap-1.5 shadow-sm font-mono"
           >
             {copied ? (
               <>
@@ -113,7 +114,8 @@ export function MethodologyNote({
           <Button
             onClick={handleDownloadJson}
             variant="outline"
-            className="rounded-full h-8 px-3.5 bg-white/[0.04] hover:bg-white/[0.08] border-white/10 text-xs text-text flex items-center gap-1.5 shadow-sm font-mono"
+            aria-label="Download metrics JSON"
+            className="rounded-full min-h-[40px] px-4 bg-white/[0.04] hover:bg-white/[0.08] border-white/10 text-xs text-text flex items-center gap-1.5 shadow-sm font-mono"
           >
             <Download className="w-3.5 h-3.5 text-cyan-400" />
             <span>Download metrics.json</span>
